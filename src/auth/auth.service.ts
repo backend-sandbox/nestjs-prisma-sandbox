@@ -7,7 +7,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 
-import { AuthDto, TokenPayloadDto } from './dtos';
+import { AuthDto, TokenPayloadDto } from './dto';
 import { mapUserToTokenPayload } from 'src/mappers';
 import { PrismaService } from '../prisma/prisma.service';
 import { ERROR_CONSTANT, SUCCESS_CONSTANT } from 'src/constants';
