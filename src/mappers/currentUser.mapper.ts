@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
 
-export const mapUser = (user: User) => {
+export const mapCurrentUser = (user: User) => {
   return { id: user.id, email: user.email };
 };

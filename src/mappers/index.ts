@@ -1,1 +1,2 @@
-export { mapUser } from './currentUser.mapper';
+export { mapCurrentUser } from './currentUser.mapper';
+export { mapUserToTokenPayload } from './tokenPayload.mapper';
