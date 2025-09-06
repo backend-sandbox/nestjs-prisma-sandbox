@@ -1,4 +1,4 @@
-import { TokenPayloadDto } from 'src/auth/dtos';
+import { TokenPayloadDto } from 'src/auth/dto';
 
 export const mapUserToTokenPayload = (
   user: TokenPayloadDto,
