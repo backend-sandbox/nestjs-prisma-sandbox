@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -15,16 +14,25 @@ model User {
   email     String  @unique
   password  String
 
+  bookmarks Bookmark[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
 }
 
 model Bookmark {
   id          String  @id @default(uuid())
+  userId      String  @map("user_id")
   title       String
   description String?
   link        String
 
+  user User @relation(fields: [userId], references: [id])
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("bookmarks")
 }
