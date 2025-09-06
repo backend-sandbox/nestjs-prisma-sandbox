@@ -1,0 +1,3 @@
+export const ERROR_CONSTANT = {
+  EMAIL_ALREADY_IN_USE: 'EMAIL_ALREADY_IN_USE',
+};
