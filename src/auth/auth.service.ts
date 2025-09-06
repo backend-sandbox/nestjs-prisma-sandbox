@@ -1,5 +1,9 @@
 import bcryptjs from 'bcryptjs';
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 
 import { AuthDto } from './dtos';
 import { ERROR_CONSTANT } from 'src/constants';
@@ -33,10 +37,32 @@ export class AuthService {
     });
 
     const mappedUser = mapUser(newUser);
-    return mappedUser;
+    return { user: mappedUser };
   }
 
-  signin(authDto: AuthDto) {
-    return { hi: 'signin' };
+  async signin(authDto: AuthDto) {
+    const { email, password } = authDto;
+
+    const existingUser = await this.prismaService.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!existingUser) {
+      throw new BadRequestException(ERROR_CONSTANT.INVALID_CREDENTIALS);
+    }
+
+    const isPasswordValid = bcryptjs.compareSync(
+      password,
+      existingUser.password,
+    );
+
+    if (!isPasswordValid) {
+      throw new BadRequestException(ERROR_CONSTANT.INVALID_CREDENTIALS);
+    }
+
+    const mappedUser = mapUser(existingUser);
+    return { user: mappedUser };
   }
 }
