@@ -1,0 +1,14 @@
+services:
+  nestjs-api-db:
+    image: postgres:13
+    ports:
+      - '${DB_PORT}:5432'
+    environment:
+      POSTGRES_PORT: ${DB_PORT}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    networks:
+      - freecodecamp
+networks:
+  freecodecamp:
