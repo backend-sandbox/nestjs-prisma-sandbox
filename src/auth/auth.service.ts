@@ -1,18 +1,24 @@
 import bcryptjs from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import {
   BadRequestException,
   ConflictException,
   Injectable,
 } from '@nestjs/common';
 
-import { AuthDto } from './dtos';
-import { ERROR_CONSTANT } from 'src/constants';
+import { AuthDto, TokenPayloadDto } from './dtos';
+import { mapUserToTokenPayload } from 'src/mappers';
 import { PrismaService } from '../prisma/prisma.service';
-import { mapUser } from 'src/mappers';
+import { ERROR_CONSTANT, SUCCESS_CONSTANT } from 'src/constants';
 
 @Injectable({})
 export class AuthService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
 
   async signup(authDto: AuthDto) {
     const { email, password } = authDto;
@@ -36,8 +42,15 @@ export class AuthService {
       },
     });
 
-    const mappedUser = mapUser(newUser);
-    return { user: mappedUser };
+    const tokenPayloadUser = mapUserToTokenPayload({
+      id: newUser.id,
+      email: newUser.email,
+    });
+
+    return {
+      message: SUCCESS_CONSTANT.SIGN_UP_SUCCESS,
+      accessToken: await this.signToken(tokenPayloadUser),
+    };
   }
 
   async signin(authDto: AuthDto) {
@@ -62,7 +75,28 @@ export class AuthService {
       throw new BadRequestException(ERROR_CONSTANT.INVALID_CREDENTIALS);
     }
 
-    const mappedUser = mapUser(existingUser);
-    return { user: mappedUser };
+    const tokenPayloadUser = mapUserToTokenPayload({
+      id: existingUser.id,
+      email: existingUser.email,
+    });
+
+    return {
+      message: SUCCESS_CONSTANT.SIGN_IN_SUCCESS,
+      accessToken: await this.signToken(tokenPayloadUser),
+    };
+  }
+
+  private async signToken(tokenPayloadDto: TokenPayloadDto): Promise<string> {
+    const { id, email } = tokenPayloadDto;
+
+    const payload = {
+      sub: id,
+      email,
+    };
+
+    return this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.get<string>('JWT_EXPIRES_IN'),
+      secret: this.configService.get<string>('JWT_SECRET'),
+    });
   }
 }
