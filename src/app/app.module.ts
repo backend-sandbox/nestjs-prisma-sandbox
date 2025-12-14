@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { BookmarkModule } from './bookmark/bookmark.module';
-import { AuthController } from './auth/auth.controller';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from '@common/prisma/prisma.module';
+import { AuthController, AuthModule } from './auth';
+import { BookmarkModule } from './bookmark';
+import { UserModule } from './user';
 
 @Module({
   imports: [

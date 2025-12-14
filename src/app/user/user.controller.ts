@@ -1,11 +1,11 @@
 import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
 
+import { AuthGuard } from '@common/guards';
+import { CurrentUser } from '../../common/decorators';
+import { CurrentUserInterceptor } from '../../common/interceptors';
+import { CurrentUserData } from '../../common/types';
 import { JwtGuard } from '../auth/guard';
-import { AuthGuard } from '../guards';
 import { UserService } from './user.service';
-import { CurrentUser } from '../decorators/current-user.decorator';
-import { CurrentUserData } from '../types';
-import { CurrentUserInterceptor } from '../interceptors/current-user.interceptor';
 
 @UseInterceptors(CurrentUserInterceptor)
 @Controller('users')
