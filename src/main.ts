@@ -9,8 +9,12 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 7777, () => {
-    console.log(`Server is running on http://localhost:${process.env.PORT ?? 7777}/api`);
-    console.log(`Swagger is running on http://localhost:${process.env.PORT ?? 7777}/swagger-docs`);
+    console.log(
+      `Server is running on http://localhost:${process.env.PORT ?? 7777}/api`,
+    );
+    console.log(
+      `Swagger is running on http://localhost:${process.env.PORT ?? 7777}/swagger-docs`,
+    );
   });
 }
 

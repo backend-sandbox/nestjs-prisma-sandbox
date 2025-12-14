@@ -1,4 +1,9 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { UserService } from '../../app/user/user.service';
 import { RequestWithUser } from '../types';
@@ -7,7 +12,10 @@ import { RequestWithUser } from '../types';
 export class CurrentUserInterceptor implements NestInterceptor {
   constructor(private readonly userService: UserService) {}
 
-  async intercept(context: ExecutionContext, next: CallHandler): Promise<Observable<any>> {
+  async intercept(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest<RequestWithUser>();
     const { userId } = request.session ?? {};
 

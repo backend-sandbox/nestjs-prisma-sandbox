@@ -19,7 +19,10 @@ export class AuthController {
   }
 
   @Post('login-session')
-  async loginWithSession(@Body() authDto: AuthDto, @Session() session: RequestWithUser['session']) {
+  async loginWithSession(
+    @Body() authDto: AuthDto,
+    @Session() session: RequestWithUser['session'],
+  ) {
     try {
       const result = await this.authService.signin(authDto);
 
