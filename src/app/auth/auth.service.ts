@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import bcryptjs from 'bcryptjs';
@@ -65,10 +61,7 @@ export class AuthService {
       throw new BadRequestException(ERROR_CONSTANT.INVALID_CREDENTIALS);
     }
 
-    const isPasswordValid = bcryptjs.compareSync(
-      password,
-      existingUser.password,
-    );
+    const isPasswordValid = bcryptjs.compareSync(password, existingUser.password);
 
     if (!isPasswordValid) {
       throw new BadRequestException(ERROR_CONSTANT.INVALID_CREDENTIALS);

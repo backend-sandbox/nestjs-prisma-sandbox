@@ -1,6 +1,6 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,7 +8,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe());
 
-  await app.listen(process.env.PORT ?? 7777);
+  await app.listen(process.env.PORT ?? 7777, () => {
+    console.log(`Server is running on http://localhost:${process.env.PORT ?? 7777}/api`);
+    console.log(`Swagger is running on http://localhost:${process.env.PORT ?? 7777}/swagger-docs`);
+  });
 }
 
-bootstrap();
+void bootstrap();

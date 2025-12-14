@@ -29,9 +29,7 @@ export class UserController {
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
-      fullName:
-        [user.firstName, user.lastName].filter(Boolean).join(' ') ||
-        'Anonymous',
+      fullName: [user.firstName, user.lastName].filter(Boolean).join(' ') || 'Anonymous',
     };
   }
 
