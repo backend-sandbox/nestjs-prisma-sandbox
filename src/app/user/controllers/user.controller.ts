@@ -1,11 +1,17 @@
-import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 
 import { AuthGuard } from '@common/guards';
-import { CurrentUser } from '../../common/decorators';
-import { CurrentUserInterceptor } from '../../common/interceptors';
-import { CurrentUserData } from '../../common/types';
-import { JwtGuard } from '../auth/guard';
-import { UserService } from './user.service';
+import { CurrentUser } from '../../../common/decorators';
+import { CurrentUserInterceptor } from '../../../common/interceptors';
+import { CurrentUserData } from '../../../common/types';
+import { JwtGuard } from '../../auth/guard';
+import { UserService } from '../services';
 
 @UseInterceptors(CurrentUserInterceptor)
 @Controller('users')
@@ -16,6 +22,11 @@ export class UserController {
   @Get('whoami')
   getMe(@CurrentUser() user: CurrentUserData | null): any {
     return this.userService.getMe(user);
+  }
+
+  @Get(':userId')
+  getUserById(@Param('userId') userId: string) {
+    return this.userService.getUserById(userId);
   }
 
   @UseGuards(JwtGuard)
