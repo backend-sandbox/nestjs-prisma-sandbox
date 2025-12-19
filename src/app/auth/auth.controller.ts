@@ -26,7 +26,7 @@ export class AuthController {
     try {
       const result = await this.authService.signin(authDto);
 
-      if (result && typeof result === 'object' && 'access_token' in result) {
+      if (result && typeof result === 'object' && 'accessToken' in result) {
         if (session) {
           session.userId = 'demo-user-id';
         }
